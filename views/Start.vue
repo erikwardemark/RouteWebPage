@@ -13,8 +13,12 @@
                             <strong>{{ route.id }}</strong>
                         </template>
                         <div>
-                            <h4>{{ route.distance }}</h4>
+                            <p>{{ route.distance }}</p>
+                            <p>{{ route.startPosition}}</p>
+                            <p>{{ route.endPosition }}</p>
+
                         </div>
+                        <button class="map-button" @click="viewMap(route.map)">View Map</button>
                     </ExpandableItem>
                 </div>
             </section>
@@ -49,6 +53,10 @@ methods : {
             } finally {
                 this.loading = false;
             }
+        },
+
+        viewMap(map) {
+            this.$router.push({ name: 'Map', params: { maps: map.id, polyline: map.summary_polyline } });
         }
     },
     mounted() {
@@ -74,5 +82,18 @@ methods : {
         border-radius: 5px;
         margin-bottom: 5px;
     }
+}
+.map-button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    float: right;
 }
 </style>
