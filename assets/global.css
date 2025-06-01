@@ -1,0 +1,113 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  background-color: #fff;
+  padding: 25px 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 700px;
+  text-align: center;
+}
+
+header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  color: #42b983; /* Vue green */
+  margin: 0 0 10px 0;
+}
+
+header p {
+  color: #555;
+  font-size: 0.9em;
+}
+
+.data-section h2 {
+  color: #35495e; /* Vue dark blue */
+  margin-top: 0;
+}
+
+button {
+  background-color: #42b983;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 20px;
+}
+
+button:hover {
+  background-color: #3aa875;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.data-display {
+  background-color: #2c3e50; /* Dark background for pre */
+  color: #fff;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: left;
+  overflow-x: auto; /* For long lines in JSON */
+  margin-top: 15px;
+}
+
+.data-display pre {
+  margin: 0;
+  white-space: pre-wrap; /* Wrap long lines */
+  word-wrap: break-word;
+}
+
+.error-message {
+  background-color: #ffdddd;
+  border: 1px solid #ffaaaa;
+  color: #d8000c;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 15px;
+  text-align: left;
+}
+
+.error-message code {
+  background-color: #f0f0f0;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: #555;
+}
+
+.no-data {
+  color: #777;
+  font-style: italic;
+  margin-top: 15px;
+}
+
+footer {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  font-size: 0.8em;
+  color: #777;
+}
