@@ -4,7 +4,7 @@ import Map from '../views/Map.vue';
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
-  { path: '/map/:maps', name: 'Map', component: Map },
+  { path: '/map/:id/:mapid', name: 'Map', component: Map },
 ];
 
 export default createRouter({

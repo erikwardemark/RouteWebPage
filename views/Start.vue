@@ -14,11 +14,11 @@
                         </template>
                         <div>
                             <p>{{ route.distance }}</p>
-                            <p>{{ route.startPosition}}</p>
-                            <p>{{ route.endPosition }}</p>
+                            <p>{{ route.startPoint }}</p>
+                            <p>{{ route.startPoint }}</p>
 
                         </div>
-                        <button class="map-button" @click="viewMap(route.map)">View Map</button>
+                        <button class="map-button" @click="viewMap(route)">View Map</button>
                     </ExpandableItem>
                 </div>
             </section>
@@ -55,14 +55,20 @@ methods : {
             }
         },
 
-        viewMap(map) {
-            this.$router.push({ name: 'Map', params: { maps: map.id, polyline: map.summary_polyline } });
+        viewMap(route) {
+            this.$router.push({ 
+                name: 'Map', 
+                params: { 
+                    mapid: route.map.id,
+                    id: route.id
+                } 
+            });
         }
     },
-    mounted() {
-        this.fetchRoutes();
-    },
-    components: { ExpandableItem },
+mounted() {
+    this.fetchRoutes();
+},
+components: { ExpandableItem },
 
 }
 </script>
