@@ -75,7 +75,7 @@ components: { ExpandableItem },
 
 <style scoped>
 .routes-container {
-    max-height: 400px;
+    height: 100vh;	
     overflow-y: auto;
     margin-top: 20px;
     padding: 10px;
