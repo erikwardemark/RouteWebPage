@@ -26,51 +26,45 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import axios from 'axios';
 import ExpandableItem from '../components/ExpandableItem.vue';
-export default {
-    name: 'Start',
-    data() {
-        return {
-            routes: [],
-            loading: false,
-            error: null,
-            backendUrl: 'http://192.168.1.87:5000/api/routes' //http://192.168.1.143:5000/api/routes
-        };
-    },
-methods : {
-        async fetchRoutes() {
-            this.loading = true;
-            this.error = null;
-            this.routes = [];
-            try {
-                const response = await axios.get(this.backendUrl);
-                this.routes = response.data;
-            } catch (err) {
-                this.error = err.message || 'Error fetching routes';
-                console.error('Error fetching routes:', err);
-            } finally {
-                this.loading = false;
-            }
-        },
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-        viewMap(route) {
-            this.$router.push({ 
-                name: 'Map', 
-                params: { 
-                    mapid: route.map.id,
-                    id: route.id
-                } 
-            });
-        }
-    },
-mounted() {
-    this.fetchRoutes();
-},
-components: { ExpandableItem },
+const router = useRouter();
+const routes = ref([]);
+const loading = ref(false);
+const error = ref(null);
+const backendUrl = 'http://192.168.1.87:5000/api/routes' //http://192.168.1.143:5000/api/routes
 
+async function fetchRoutes() {
+    loading.value = true;
+    error.value = null;
+    routes.value = [];
+    try {
+        const response = await axios.get(backendUrl);
+        routes.value = response.data;
+    } catch (err) {
+        error.value = err.message || 'Error fetching routes';
+        console.error('Error fetching routes:', err);
+    } finally {
+        loading.value = false;
+    }
 }
+
+function viewMap(route) {
+    router.push({ 
+        name: 'Map', 
+        params: { 
+            mapid: route.map.id,
+            id: route.id
+        } 
+    });
+}
+
+fetchRoutes();
+
 </script>
 
 <style scoped>
