@@ -36,7 +36,7 @@ export default {
             routes: [],
             loading: false,
             error: null,
-            backendUrl: 'http://192.168.1.143:5000/api/routes' 
+            backendUrl: 'http://192.168.1.87:5000/api/routes' //http://192.168.1.143:5000/api/routes
         };
     },
 methods : {
