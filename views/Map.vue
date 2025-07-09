@@ -1,10 +1,10 @@
 <template>
-    <p> ID: {{ routeid }}</p> <br>
+    <p> ID: {{ pathId }}</p> <br>
     <p> Center: {{ center }}</p> <br>
     <!-- <p> Coordinates: {{ routeOptions.path }}</p>  -->
 
-    <button @click="EditRoute">Edit route</button>
-    <button @click="SaveRoute">Save Route</button>
+    <button @click="EditPath">Edit Path</button>
+    <button @click="SavePath">Save Path</button>
 
     <GoogleMap
             api-key="AIzaSyCQmfChcySlixqBada07625MgJevZLlrg0"
@@ -13,8 +13,8 @@
             :zoom="14"
         >
             <Polyline 
-            :options="routeOptions"
-            @update:path="SaveRoute"
+            :options="pathOptions"
+            @update:path="SavePath"
             />
         </GoogleMap> 
     
@@ -26,10 +26,8 @@ import { GoogleMap, Polyline } from 'vue3-google-map'
 import { ref } from 'vue';
 import { useRoute } from 'vue-router'
 
-const coordinates = ref([])
 const center = ref({})
-const editable = ref(false)
-const routeOptions = ref({
+const pathOptions = ref({
     path: [],
     editable: false,
     geodesic: true,
@@ -37,27 +35,26 @@ const routeOptions = ref({
     strokeOpacity: 1.0,
     strokeWeight: 2,})
 
-const route = useRoute()
-const routeid = ref(route.params.id)
-const mapid =  ref(route.params.maps)
+const router = useRoute()
+const pathId = ref(router.params.id)
 
 async function decodePolyLine() {
-            const url = `http://192.168.1.87:5000/api/route/${routeid.value}/map`//`http://192.168.1.143:5000/api/route/${this.routeid}/map`;
+            const url = `http://192.168.1.87:5000/api/route/${pathId.value}/map`//`http://192.168.1.143:5000/api/route/${this.routeid}/map`;
             const mapData = await axios.get(url)
-            routeOptions.value.path = mapData.data.coordinates;
+            pathOptions.value.path = mapData.data.coordinates;
             center.value = mapData.data.center;       
 }
 
-function EditRoute() {
-  routeOptions.value = {
-    ...routeOptions.value,
+function EditPath() {
+  pathOptions.value = {
+    ...pathOptions.value,
     editable: true
     }
 }
 
-function SaveRoute(newPath) {
-  routeOptions.value = {
-    ...routeOptions.value,
+function SavePath(newPath) {
+  pathOptions.value = {
+    ...pathOptions.value,
     path: newPath,
     editable: false
     }

@@ -6,19 +6,19 @@
         
         <main>
             <section class="routes-section">
-                <h2>List of router</h2>
+                <h2>List of paths</h2>
                 <div id="routes" class="routes-container">
-                    <ExpandableItem v-for = "route in routes" :key = "route.id">
+                    <ExpandableItem v-for = "path in runPaths" :key = "path.id">
                         <template #header>
-                            <strong>{{ route.id }}</strong>
+                            <strong>{{ path.id }}</strong>
                         </template>
                         <div>
-                            <p>{{ route.distance }}</p>
-                            <p>{{ route.startPoint }}</p>
-                            <p>{{ route.startPoint }}</p>
+                            <p>{{ path.distance }}</p>
+                            <p>{{ path.startPoint }}</p>
+                            <p>{{ path.startPoint }}</p>
 
                         </div>
-                        <button class="map-button" @click="viewMap(route)">View Map</button>
+                        <button class="map-button" @click="viewMap(path)">View Map</button>
                     </ExpandableItem>
                 </div>
             </section>
@@ -33,18 +33,15 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const routes = ref([]);
+const runPaths = ref([]);
 const loading = ref(false);
 const error = ref(null);
 const backendUrl = 'http://192.168.1.87:5000/api/routes' //http://192.168.1.143:5000/api/routes
 
 async function fetchRoutes() {
-    loading.value = true;
-    error.value = null;
-    routes.value = [];
     try {
         const response = await axios.get(backendUrl);
-        routes.value = response.data;
+        runPaths.value = response.data;
     } catch (err) {
         error.value = err.message || 'Error fetching routes';
         console.error('Error fetching routes:', err);
@@ -53,12 +50,11 @@ async function fetchRoutes() {
     }
 }
 
-function viewMap(route) {
+function viewMap(path) {
     router.push({ 
         name: 'Map', 
         params: { 
-            mapid: route.map.id,
-            id: route.id
+            id: path.id
         } 
     });
 }
