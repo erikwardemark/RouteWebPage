@@ -5,6 +5,7 @@
 
     <button @click="EditPath">Edit Path</button>
     <button @click="SavePath">Save Path</button>
+    <button @click="ExportPath">Export as GPX</button>
 
     <GoogleMap
             api-key="AIzaSyCQmfChcySlixqBada07625MgJevZLlrg0"
@@ -20,7 +21,7 @@
             @remove_at="onPolylineEdited"
             @set_at="onPolylineEdited"
             />
-        </GoogleMap> 
+        </GoogleMap>
     <p>new path: {{ updatedPath }}</p>
     
 </template>
@@ -43,10 +44,11 @@ const pathOptions = ref({
     strokeWeight: 2,})
 
 const router = useRoute()
+const baseUrl = 'http://192.168.1.87:5000/api/path/'
 const pathId = ref(router.params.id)
 
 async function decodePolyLine() {
-            const url = `http://192.168.1.87:5000/api/path/${pathId.value}/map`//`http://192.168.1.143:5000/api/route/${this.routeid}/map`;
+            const url = baseUrl + pathId.value + '/map'
             const mapData = await axios.get(url)
             pathOptions.value.path = mapData.data.coordinates;
             center.value = mapData.data.center;    
@@ -66,14 +68,17 @@ async function SavePath() {
     path: getNewPath().getArray(),
     editable: false
     }
-    await axios.put(`http://192.168.1.87:5000/api/path/${pathId.value}/map`, 
-    {
+    await axios.put( 
+      baseUrl + pathId.value+ '/map', 
+      {
       path: pathOptions.value.path,
       center: center.value
-    }
-);
+      }
+    );
+}
 
-
+async function ExportPath() {
+  await axios.post(baseUrl + pathId.value + '/export')
 }
 
 function onPolylineEdited() {
