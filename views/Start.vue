@@ -5,6 +5,12 @@
         </header>
         
         <main>
+            <section class = "import-section">
+                <h2>Import new route</h2>
+                <input v-model="fileImport" placeholder="File path" />
+                <button @click="uploadFile">Import</button>
+            </section>
+
             <section class="routes-section">
                 <h2>List of paths</h2>
                 <div id="routes" class="routes-container">
@@ -36,11 +42,12 @@ const router = useRouter();
 const runPaths = ref([]);
 const loading = ref(false);
 const error = ref(null);
-const backendUrl = 'http://192.168.1.87:5000/api/routes' //http://192.168.1.143:5000/api/routes
+const fileImport = ref(null);
+const backendUrl = '192.168.1.87:5000' //http://192.168.1.143:5000/api/routes
 
 async function fetchRoutes() {
     try {
-        const response = await axios.get(backendUrl);
+        const response = await axios.get('http://' + backendUrl + '/api/routes');
         runPaths.value = response.data;
     } catch (err) {
         error.value = err.message || 'Error fetching routes';
@@ -57,6 +64,20 @@ function viewMap(path) {
             id: path.id
         } 
     });
+}
+async function uploadFile(){
+    const filePath = fileImport.value
+    if (!filePath) return
+    console.log(filePath)
+
+    const formData = new FormData()
+    formData.append("file", filePath)   // key MUST match Flask’s request.files["file"]
+
+    await axios.post("http://" + backendUrl + "/api/upload", 
+        {
+            path: filePath
+        }
+    )
 }
 
 fetchRoutes();
