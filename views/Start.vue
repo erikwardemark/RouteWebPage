@@ -8,7 +8,7 @@
             <section class = "import-section">
                 <h2>Import new route</h2>
                 <input v-model="fileImport" placeholder="File path" />
-                <button @click="uploadFile">Import</button>
+                <button @click="importFile">Import</button>
             </section>
 
             <section class="routes-section">
@@ -65,19 +65,23 @@ function viewMap(path) {
         } 
     });
 }
-async function uploadFile(){
+async function importFile(){
     const filePath = fileImport.value
     if (!filePath) return
-    console.log(filePath)
 
     const formData = new FormData()
     formData.append("file", filePath)   // key MUST match Flask’s request.files["file"]
 
+    try {
     await axios.post("http://" + backendUrl + "/api/upload", 
         {
             path: filePath
         }
     )
+    } catch (err) {
+        error.value = err.message || 'Error uploading file';
+        console.error('Error uploading file:', err);
+    }
 }
 
 fetchRoutes();

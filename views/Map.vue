@@ -31,6 +31,7 @@ import axios from 'axios';
 import { GoogleMap, Polyline } from 'vue3-google-map'
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router'
+import { useNotification } from "@kyvg/vue3-notification";
 
 const polylineref = ref(null)
 const updatedPath = ref([])
@@ -44,6 +45,7 @@ const pathOptions = ref({
     strokeWeight: 2,})
 
 const router = useRoute()
+const { notify }  = useNotification()
 const baseUrl = 'http://192.168.1.87:5000/api/path/'
 const pathId = ref(router.params.id)
 
@@ -78,7 +80,30 @@ async function SavePath() {
 }
 
 async function ExportPath() {
-  await axios.post(baseUrl + pathId.value + '/export')
+  try {
+    const result = await axios.post(baseUrl + pathId.value + '/export')
+    if (result.status === 200) {
+      notify({
+        title: "Success",
+        text: "File exported successfully",
+        type: "success",
+        duration: 5000,
+        speed: 1000,
+        position: "top right"
+      });
+    } 
+  } catch (error) {
+    console.error('Error exporting file:', error);
+    const message = error.response?.data?.message || 'Error exporting file';
+    notify({
+      title: "Error",
+      text: message,
+      type: "error",
+      duration: 5000,
+      speed: 1000,
+      position: "top right"
+    });
+  }
 }
 
 function onPolylineEdited() {
