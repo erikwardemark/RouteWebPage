@@ -24,7 +24,7 @@
                             <p>{{ path.startPoint }}</p>
 
                         </div>
-                        <button class="map-button" @click="viewMap(path)">View Map</button>
+                        <button class="map-button" @click="viewMap(path.id)">View Map</button>
                     </ExpandableItem>
                 </div>
             </section>
@@ -37,6 +37,7 @@ import axios from 'axios';
 import ExpandableItem from '../components/ExpandableItem.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { notify } from '@kyvg/vue3-notification';
 
 const router = useRouter();
 const runPaths = ref([]);
@@ -57,14 +58,16 @@ async function fetchRoutes() {
     }
 }
 
-function viewMap(path) {
+function viewMap(pathId) {
+    console.log("Viewing map for path ID:", pathId);
     router.push({ 
         name: 'Map', 
         params: { 
-            id: path.id
+            id: pathId
         } 
     });
 }
+
 async function importFile(){
     const filePath = fileImport.value
     if (!filePath) return
@@ -73,14 +76,35 @@ async function importFile(){
     formData.append("file", filePath)   // key MUST match Flask’s request.files["file"]
 
     try {
-    await axios.post("http://" + backendUrl + "/api/upload", 
-        {
-            path: filePath
+        const response = await axios.post("http://" + backendUrl + "/api/upload", 
+            {
+                path: filePath
+            }
+        )
+        if (response.status === 200) {
+            notify({
+                title: 'Success',
+                text: 'File imported successfully!',
+                type: 'success',
+                duration: 5000,
+                speed: 1000,
+                position: "top right"
+            
+            });
+            viewMap(response.data.newId)
+
         }
-    )
     } catch (err) {
-        error.value = err.message || 'Error uploading file';
-        console.error('Error uploading file:', err);
+        notify({
+                title: 'Error',
+                text: 'File could not be imported!',
+                type: 'error',
+                duration: 5000,
+                speed: 1000,
+                position: "top right"
+            
+            });
+        console.error('Error importing file:', err);
     }
 }
 
