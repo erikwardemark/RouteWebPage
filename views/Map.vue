@@ -56,9 +56,10 @@ async function decodePolyLine() {
 }
 
 function EditPath() {
+  const editable = !pathOptions.value.editable;
   pathOptions.value = {
     ...pathOptions.value,
-    editable: true
+    editable: editable
     }
 }
 
