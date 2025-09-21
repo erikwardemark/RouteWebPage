@@ -17,9 +17,7 @@
             ref="polylineref"
             :options="pathOptions"
             @dragend="onPolylineEdited"
-            @insert_at="onPolylineEdited"
-            @remove_at="onPolylineEdited"
-            @set_at="onPolylineEdited"
+            @dblclick="handlePolylineDblClick"
             />
         </GoogleMap>
     <p>new path: {{ updatedPath }}</p>
@@ -103,6 +101,25 @@ async function ExportPath() {
       speed: 1000,
       position: "top right"
     });
+  }
+}
+
+const handlePolylineDblClick = (event) => {
+  const gpsIndex = event.vertex;
+
+  // Access the underlying MVCArray of the path
+    const newPath = getNewPath();
+    // Get the path as an array of LatLng objects
+    const pathArray = newPath.getArray();
+
+  if (gpsIndex !== null && gpsIndex !== undefined) {
+    // Remove the vertex at the specified index
+    newPath.removeAt(gpsIndex);
+    // Reflect changes in updatedPath
+    updatedPath.value = pathArray.map(latLng => ({
+      lat: latLng.lat(),
+      lng: latLng.lng()
+    }));
   }
 }
 
