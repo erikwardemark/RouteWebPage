@@ -1,26 +1,27 @@
 <template>
     <p> ID: {{ pathId }}</p> <br>
+    <p> Name: {{ routeData.name }}</p> <br>
+    <p> Distance: {{ routeData.distance }}</p> <br>
+    <p> Elevation: {{ routeData.elevation }}</p> <br>
     <p> Center: {{ center }}</p> <br>
-    <!-- <p> Coordinates: {{ routeOptions.path }}</p>  -->
 
     <button @click="EditPath">Edit Path</button>
     <button @click="SavePath">Save Path</button>
     <button @click="ExportPath">Export as GPX</button>
 
     <GoogleMap
-            api-key="AIzaSyCQmfChcySlixqBada07625MgJevZLlrg0"
-            style="width: 100%; height: 500px"
-            :center="center"
-            :zoom="14"
-        >
-            <Polyline
-            ref="polylineref"
-            :options="pathOptions"
-            @dragend="onPolylineEdited"
-            @dblclick="handlePolylineDblClick"
-            />
-        </GoogleMap>
-    <p>new path: {{ updatedPath }}</p>
+      api-key="AIzaSyCQmfChcySlixqBada07625MgJevZLlrg0"
+      style="width: 100%; height: 500px"
+      :center="center"
+      :zoom="14"
+    >
+      <Polyline
+        ref="polylineref"
+        :options="pathOptions"
+        @dragend="onPolylineEdited"
+        @dblclick="handlePolylineDblClick"
+      />
+    </GoogleMap>
     
 </template>
 
@@ -46,13 +47,27 @@ const router = useRoute()
 const { notify }  = useNotification()
 const baseUrl = 'http://192.168.1.87:5000/api/path/'
 const pathId = ref(router.params.id)
+const routeData = ref({})
 
-async function decodePolyLine() {
-            const url = baseUrl + pathId.value + '/map'
-            const mapData = await axios.get(url)
-            pathOptions.value.path = mapData.data.coordinates;
-            center.value = mapData.data.center;    
-            updatedPath.value = mapData.data.coordinates;   
+async function fetchData() {
+  const url = baseUrl + pathId.value 
+  const data = await axios.get(url)
+  routeData.value = {
+    name: data.data.name,
+    distance: data.data.distance,
+    elevation: data.data.total_elevation_gain,
+    type: data.data.type,
+    creation_date: data.data.creation_date
+  };
+  console.log(routeData.value)
+}
+
+async function fetchMap() {
+  const url = baseUrl + pathId.value + '/map'
+  const mapData = await axios.get(url)
+  pathOptions.value.path = mapData.data.coordinates;
+  center.value = mapData.data.center;    
+  updatedPath.value = mapData.data.coordinates;   
 }
 
 function EditPath() {
@@ -147,7 +162,8 @@ function getNewPath() {
 
 }
 onMounted(() => {
-  decodePolyLine()
+  fetchData()
+  fetchMap()
 })
 
 </script>
