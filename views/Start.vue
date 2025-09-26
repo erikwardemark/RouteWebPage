@@ -1,34 +1,40 @@
 <template>
-    <div id="app" class="container">
-        <header>
-            <h1>Running routes</h1>
-        </header>
-        
-        <main>
-            <section class = "import-section">
-                <h2>Import new route</h2>
+    <div id =container class = "container2-1">
+        <div id="title" class="title">
+            <h1>Running Routes</h1>
+        </div>
+        <div id="routelist" class="routelist">
+            <h1>List of paths</h1>
+            <p>Number of paths ({{ runPaths.length }})</p>
+            <div id="routes" class="routes-container">
+                <ExpandableItem v-for = "path in runPaths" :key = "path.id">
+                    <template #header>
+                        <strong>{{ path.name }}</strong>
+                    </template>
+                    <div>
+                        <p>{{ path.name }}</p>
+                        <p>{{ path.distance }}</p>
+                        <p>{{ path.startPoint }}</p>
+
+                    </div>
+                    <button class="map-button" @click="viewMap(path.id)">View Map</button>
+                </ExpandableItem>
+            </div>
+        </div>
+        <div id="abouT" class="about">
+            <h1>About</h1>
+            <p>This is a web application for viewing and managing running routes. You can view existing routes, import new ones, and see them displayed on a map.</p>
+            <p>To get started, select a route from the list to view its details and map.</p>
+            <p>You can also import new routes using the import section below.</p>
+        </div>
+         <div class = "import-section">
+                <h1>Import new route</h1>
                 <input v-model="fileImport" placeholder="File path" />
                 <button @click="importFile">Import</button>
-            </section>
-
-            <section class="routes-section">
-                <h2>List of paths</h2>
-                <div id="routes" class="routes-container">
-                    <ExpandableItem v-for = "path in runPaths" :key = "path.id">
-                        <template #header>
-                            <strong>{{ path.id }}</strong>
-                        </template>
-                        <div>
-                            <p>{{ path.distance }}</p>
-                            <p>{{ path.startPoint }}</p>
-                            <p>{{ path.startPoint }}</p>
-
-                        </div>
-                        <button class="map-button" @click="viewMap(path.id)">View Map</button>
-                    </ExpandableItem>
-                </div>
-            </section>
-        </main>
+        </div>
+        <div class="footer">
+            <p>By Erik Wårdemark</p>
+        </div>
     </div>
 </template>
 
@@ -50,9 +56,10 @@ async function fetchRoutes() {
     try {
         const response = await axios.get('http://' + backendUrl + '/api/routes');
         runPaths.value = response.data;
+        console.log('Fetched routes:', runPaths.value);
     } catch (err) {
         error.value = err.message || 'Error fetching routes';
-        console.error('Error fetching routes:', err);
+        //console.error('Error fetching routes:', err);
     } finally {
         loading.value = false;
     }
@@ -113,12 +120,25 @@ fetchRoutes();
 </script>
 
 <style scoped>
-.routes-container {
-    height: 100vh;	
+.title {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+    border-radius: 0px;
+}
+
+.routelist {
     overflow-y: auto;
-    margin-top: 20px;
-    padding: 10px;
+    background-color: #1519f7;
+    color: white;
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    scrollbar-color: #888 #f1f1f1; /* thumb and track color */
+    scrollbar-width: thin; /* "auto" or "thin" */
+}
+
+.routes-container {	
     text-align: left;
+    color: black;
 
     ul li {
         padding: 5px;
@@ -128,17 +148,32 @@ fetchRoutes();
         margin-bottom: 5px;
     }
 }
-.map-button {
-    background-color: #4CAF50;
-    border: none;
+
+.import-section {
+    background-color: #1519f7;
     color: white;
-    padding: 10px 20px;
+    text-transform: uppercase;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 10px;
-    cursor: pointer;
-    float: right;
+    font-size: 1em;
+    grid-row: 3;
+    grid-column: 2;
+}
+.about {
+    background-color: #1519f7;
+    color: white;
+    text-align: left;
+    padding-left: 10px;
+    font-size: 0.75em;
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.footer {
+    background-color: #1519f7;
+    color: white;
+    text-align: left;
+    font-size: 0.75em;
+    grid-row: 4;
+    grid-column: 1 / span 2;
 }
 </style>
