@@ -1,28 +1,43 @@
 <template>
-    <p> ID: {{ pathId }}</p> <br>
-    <p> Name: {{ routeData.name }}</p> <br>
-    <p> Distance: {{ routeData.distance }}</p> <br>
-    <p> Elevation: {{ routeData.elevation }}</p> <br>
-    <p> Center: {{ center }}</p> <br>
+  <div id=container class = "container2-1">
+    <div id="title" class="title">
+      <h1>{{ routeData.name }}</h1>
+    </div>
 
-    <button @click="EditPath">Edit Path</button>
-    <button @click="SavePath">Save Path</button>
-    <button @click="ExportPath">Export as GPX</button>
+    <div id="info" class="info">
+      <h1>Route Information</h1>
+      <p> ID: {{ pathId }}</p> <br>
+      <p> Name: {{ routeData.name }}</p> <br>
+      <p> Distance: {{ routeData.distance }}</p> <br>
+      <p> Elevation: {{ routeData.elevation }}</p> <br>
+      <p> Center: {{ center }}</p> <br>
+    </div>
 
-    <GoogleMap
-      api-key="AIzaSyCQmfChcySlixqBada07625MgJevZLlrg0"
-      style="width: 100%; height: 500px"
-      :center="center"
-      :zoom="14"
-    >
-      <Polyline
-        ref="polylineref"
-        :options="pathOptions"
-        @dragend="onPolylineEdited"
-        @dblclick="handlePolylineDblClick"
-      />
-    </GoogleMap>
-    
+    <div id="map" class="map">
+      <GoogleMap
+        api-key="AIzaSyCQmfChcySlixqBada07625MgJevZLlrg0"
+        style="width: 100%; height: 400px"
+        :center="center"
+        :zoom="14"
+      >
+        <Polyline
+          ref="polylineref"
+          :options="pathOptions"
+          @dragend="onPolylineEdited"
+          @dblclick="handlePolylineDblClick"
+        />
+      </GoogleMap>
+    </div>
+     <div id="buttons" class="buttons">
+      <button @click="EditPath">Edit Path</button>
+      <button @click="SavePath">Save Path</button>
+      <button @click="ExportPath">Export as GPX</button>
+    </div>
+
+    <div class="footer">
+      <p>By Erik Wårdemark</p>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -167,3 +182,31 @@ onMounted(() => {
 })
 
 </script>
+
+<style scoped>
+.info {
+    background-color: var(--primary-color);
+    font-size: 0.75em;
+    grid-row: 2 / span 2;
+    grid-column: 1;
+    height: 100%;
+    color: var(--neutral-text-color);
+    padding-left: 10px;
+}
+
+.map {
+    grid-column: 2;
+    grid-row: 2;
+    background-color: lightgrey;
+}
+
+.buttons {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    font-size: 1em;
+    grid-row: 3;
+    grid-column: 2;
+}
+
+</style>

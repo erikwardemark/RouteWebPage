@@ -120,19 +120,13 @@ fetchRoutes();
 </script>
 
 <style scoped>
-.title {
-    grid-column: 1 / span 2;
-    grid-row: 1;
-    border-radius: 0px;
-}
-
 .routelist {
     overflow-y: auto;
-    background-color: #1519f7;
+    background-color: var(--primary-color);
     color: white;
     grid-column: 1;
     grid-row: 2 / span 2;
-    scrollbar-color: #888 #f1f1f1; /* thumb and track color */
+    scrollbar-color: #888 #d4d4d4; /* thumb and track color */
     scrollbar-width: thin; /* "auto" or "thin" */
 }
 
@@ -142,15 +136,13 @@ fetchRoutes();
 
     ul li {
         padding: 5px;
-        border: 1px solid #000000;
-        background-color: aquamarine;
         border-radius: 5px;
         margin-bottom: 5px;
     }
 }
 
 .import-section {
-    background-color: #1519f7;
+    background-color: var(--primary-color);
     color: white;
     text-transform: uppercase;
     text-align: center;
@@ -159,7 +151,7 @@ fetchRoutes();
     grid-column: 2;
 }
 .about {
-    background-color: #1519f7;
+    background-color: #2E7D32;
     color: white;
     text-align: left;
     padding-left: 10px;
@@ -168,12 +160,4 @@ fetchRoutes();
     grid-column: 2;
 }
 
-.footer {
-    background-color: #1519f7;
-    color: white;
-    text-align: left;
-    font-size: 0.75em;
-    grid-row: 4;
-    grid-column: 1 / span 2;
-}
 </style>
