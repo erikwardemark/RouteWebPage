@@ -6,11 +6,9 @@
 
     <div id="info" class="info">
       <h1>Route Information</h1>
-      <p> ID: {{ pathId }}</p> <br>
-      <p> Name: {{ routeData.name }}</p> <br>
-      <p> Distance: {{ routeData.distance }}</p> <br>
-      <p> Elevation: {{ routeData.elevation }}</p> <br>
-      <p> Center: {{ center }}</p> <br>
+      <div v-for ="(value, key) in routeData">
+        <p>{{ key.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()) }}: {{ value }}</p>
+      </div>
     </div>
 
     <div id="map" class="map">
@@ -69,10 +67,12 @@ async function fetchData() {
   const data = await axios.get(url)
   routeData.value = {
     name: data.data.name,
-    distance: data.data.distance,
-    elevation: data.data.total_elevation_gain,
+    distance: data.data.distance + 'm',
+    elevation: data.data.total_elevation_gain + 'm',
     type: data.data.type,
-    creation_date: data.data.creation_date
+    creation_date: data.data.creation_date,
+    updated: data.data.updated
+
   };
   console.log(routeData.value)
 }
@@ -106,6 +106,7 @@ async function SavePath() {
       center: center.value
       }
     );
+    fetchData()
 }
 
 async function ExportPath() {
@@ -173,9 +174,8 @@ function onPolylineEdited() {
 function getNewPath() {
   // This assumes the Polyline instance has a getPath() method
   return polylineref.value.polyline.getPath()
-  
-
 }
+
 onMounted(() => {
   fetchData()
   fetchMap()
