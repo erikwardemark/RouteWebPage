@@ -4,24 +4,24 @@
             <h1>Running Routes</h1>
         </div>
         <div id="routelist" class="routelist">
-            <h1>List of paths</h1>
-            <p>Number of paths ({{ runPaths.length }})</p>
-            <div id="routes" class="routes-container">
-                <ExpandableItem v-for = "path in runPaths" :key = "path.id">
-                    <template #header>
-                        <strong>{{ path.name }}</strong>
-                    </template>
-                    <div>
-                        <p>{{ path.name }}</p>
-                        <p>{{ path.distance }}</p>
-                        <p>{{ path.startPoint }}</p>
-
-                    </div>
-                    <button class="map-button" @click="viewMap(path.id)">View Map</button>
-                </ExpandableItem>
+            <div id="header" class="header">
+                <h1>List of paths</h1>
+                <p>Number of paths ({{ runPaths.length }})</p>
             </div>
+            <ExpandableItem v-for = "path in runPaths" :key = "path.id">
+                <template #header>
+                    <strong>{{ path.name }}</strong>
+                </template>
+                <div>
+                    <p>{{ path.name }}</p>
+                    <p>Distance: {{ path.distance }}</p>
+                    <p>Start GPS coordinates: {{ path.startPoint }}</p>
+
+                </div>
+                <button class="map-button" @click="viewMap(path.id)">View Map</button>
+            </ExpandableItem>
         </div>
-        <div id="abouT" class="about">
+        <div id="about" class="about">
             <h1>About</h1>
             <p>This is a web application for viewing and managing running routes. You can view existing routes, import new ones, and see them displayed on a map.</p>
             <p>To get started, select a route from the list to view its details and map.</p>
@@ -122,40 +122,49 @@ fetchRoutes();
 <style scoped>
 .routelist {
     overflow-y: auto;
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--primary-green);
+    color: var(--text-white);
     grid-column: 1;
     grid-row: 2 / span 2;
-    scrollbar-color: #888 #d4d4d4; /* thumb and track color */
-    scrollbar-width: thin; /* "auto" or "thin" */
 }
-
-.routes-container {	
+.routelist .header h1 {
+    text-align: center;
+}
+.routelist .header p {
     text-align: left;
-    color: black;
-
-    ul li {
-        padding: 5px;
-        border-radius: 5px;
-        margin-bottom: 5px;
-    }
+    padding-left: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--accent-light-grey) ;
 }
 
 .import-section {
-    background-color: var(--primary-color);
+    background-color: var(--primary-green);
     color: white;
     text-transform: uppercase;
     text-align: center;
     font-size: 1em;
     grid-row: 3;
     grid-column: 2;
+} 
+.import-section input {
+    padding: 5px;
+    margin-right: 5px;
+    border-radius: 2px;
+    border: none;
+    width: 60%;
+} 
+.import-section input:focus {
+    outline: var(--primary-orange) 2px solid;
+    box-shadow: 0 0 10px var(--primary-orange);
 }
+
 .about {
     background-color: #2E7D32;
     color: white;
     text-align: left;
     padding-left: 10px;
-    font-size: 0.75em;
+    font-size: 1em;
     grid-row: 2;
     grid-column: 2;
 }

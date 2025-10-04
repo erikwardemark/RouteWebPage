@@ -185,13 +185,21 @@ onMounted(() => {
 
 <style scoped>
 .info {
-    background-color: var(--primary-color);
-    font-size: 0.75em;
+    background-color: var(--primary-green);
+    font-size: 1em;
     grid-row: 2 / span 2;
     grid-column: 1;
     height: 100%;
-    color: var(--neutral-text-color);
-    padding-left: 10px;
+    color: var(--text-white);
+}
+.info h1 {
+    text-align: center;
+    margin-bottom: 5px;
+    border-bottom: 2px solid var(--accent-light-grey);
+}
+.info p {
+    text-align: left;
+    padding-left: 5px;
 }
 
 .map {
@@ -201,7 +209,7 @@ onMounted(() => {
 }
 
 .buttons {
-    background-color: var(--primary-color);
+    background-color: var(--primary-green);
     color: white;
     text-align: center;
     font-size: 1em;

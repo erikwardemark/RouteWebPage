@@ -7,12 +7,14 @@
 }
 
 :root {
-  --background-color: #04300c;
-  --primary-color: #2E7D32;
-  --header-color: #275429;
-  --accent-color: #f09311; 
-  --active-color: #b56a01;
-  --neutral-text-color: white;
+  --background-green: #04300c; /* --background-color */
+  --primary-green: #2E7D32; /* --primary-color */
+  --active-green: #0f3611; /* --active-color */
+  --header-green: #275429; /* --header-color */
+  --primary-orange: #f09311; /* --accent-color */
+  --active-orange: #b56a01; /* --active-color */
+  --text-white: white; /* --neutral-text-color */
+  --accent-light-grey: rgba(200, 200, 200, 0.5); /* --accent-light-grey */
 
   /* You can also define other global properties */
   --font-family-sans: 'Inter', sans-serif;
@@ -23,7 +25,7 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
+  background-color: var(--background-green);
   display: grid;
   justify-content: center;
   align-items: center;
@@ -32,7 +34,7 @@ body {
 }
 
 .container {
-  background-color: var(--primary-color);
+  background-color: var(--primary-green);
   padding: 10px 20px;
   border-radius: 8px;
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
@@ -51,9 +53,11 @@ body {
 
 .container2-1 > div {
   border-radius: 5px;
+  scrollbar-color: var(--accent-light-grey) var(--background-green);
+  scrollbar-width: thin;
 }
 .container2-1 > .title {
-    background-color: var(--header-color);
+    background-color: var(--header-green);
     color: white;
     text-transform: uppercase;
     text-align: center;
@@ -70,7 +74,7 @@ body {
 
 
 .footer {
-    background-color: var(--header-color);
+    background-color: var(--header-green);
     color: white;
     text-align: left;
     font-size: 0.75em;
@@ -98,8 +102,8 @@ header p, .header p, p {
 }
 
 button {
-  background-color: #f09311;
-  color: white;
+  background-color: var(--primary-orange);
+  color: var(--text-white);
   border: none;
   padding: 12px 25px;
   text-align: center;
@@ -114,7 +118,7 @@ button {
 }
 
 button:hover {
-  background-color: #b56a01;
+  background-color: var(--active-orange);
 }
 
 

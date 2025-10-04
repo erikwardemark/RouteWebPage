@@ -33,23 +33,34 @@ function toggle() {
 
 <style scoped>
 .expandable-item {
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
+  border: 1px solid var(--primary-orange);
+  margin-bottom: 5px;
   border-radius: 4px;
   overflow: hidden; /* Important for smooth transitions */
 }
+.expandable-item h1 {
+    text-align: center;
+}
+.expandable-item p {
+    text-align: left;
+    padding-left: 5px;
+    padding-bottom: 2px;
+    margin-bottom: none;
+    border-bottom: none ;
+}
 
 .item-header {
-  background-color: #f5f5f5;
+  background-color: var(--header-green);
   padding: 10px 15px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: var(--text-white);
 }
 
 .item-header:hover {
-  background-color: #eee;
+  background-color: var(--active-green);
 }
 
 .icon {
@@ -58,7 +69,7 @@ function toggle() {
 
 .item-content {
   padding: 15px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--primary-orange);
 }
 
 /* Transition styles */
