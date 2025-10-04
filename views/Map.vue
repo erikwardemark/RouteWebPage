@@ -99,13 +99,16 @@ async function SavePath() {
     path: getNewPath().getArray(),
     editable: false
     }
-    await axios.put( 
+    const response = await axios.put( 
       baseUrl + pathId.value+ '/map', 
       {
       path: pathOptions.value.path,
       center: center.value
       }
     );
+    if (response.status != 200) {
+      console.error('Error saving path:', response);
+    }
     fetchData()
 }
 
