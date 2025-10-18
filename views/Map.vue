@@ -11,21 +11,11 @@
       </div>
     </div>
 
-    <div id="map" class="map">
-      <GoogleMap
-        api-key="AIzaSyCQmfChcySlixqBada07625MgJevZLlrg0"
-        style="width: 100%; height: 400px"
-        :center="center"
-        :zoom="14"
-      >
-        <Polyline
-          ref="polylineref"
-          :options="pathOptions"
-          @dragend="onPolylineEdited"
-          @dblclick="handlePolylineDblClick"
-        />
-      </GoogleMap>
-    </div>
+    <MapItem
+      :center="center"
+      :pathOptions="pathOptions"
+      ref="mapItemRef"
+    />
      <div id="buttons" class="buttons">
       <button @click="EditPath">Edit Path</button>
       <button @click="SavePath">Save Path</button>
@@ -39,31 +29,32 @@
 </template>
 
 <script setup>
-import axios from 'axios';
-import { GoogleMap, Polyline } from 'vue3-google-map'
-import { onMounted, ref } from 'vue';
+import axios from 'axios'
+import { onBeforeMount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useNotification } from "@kyvg/vue3-notification";
+import { useNotification } from "@kyvg/vue3-notification"
+import MapItem from '../components/MapItem.vue'
 
-const polylineref = ref(null)
+const mapItemRef = ref(null)
 const updatedPath = ref([])
 const center = ref({})
 const pathOptions = ref({
-    path: [],
-    editable: false,
-    geodesic: true,
-    strokeColor: '#FF0000',
-    strokeOpacity: 1.0,
-    strokeWeight: 2,})
+  path: [],
+  editable: false,
+  geodesic: true,
+  strokeColor: '#FF0000',
+  strokeOpacity: 1.0,
+  strokeWeight: 2,
+})
 
 const router = useRoute()
-const { notify }  = useNotification()
+const { notify } = useNotification()
 const baseUrl = 'http://192.168.1.87:5000/api/path/'
 const pathId = ref(router.params.id)
 const routeData = ref({})
 
 async function fetchData() {
-  const url = baseUrl + pathId.value 
+  const url = baseUrl + pathId.value
   const data = await axios.get(url)
   routeData.value = {
     name: data.data.name,
@@ -71,45 +62,53 @@ async function fetchData() {
     elevation: data.data.total_elevation_gain + 'm',
     type: data.data.type,
     creation_date: data.data.creation_date,
-    updated: data.data.updated
-
-  };
+    updated: data.data.updated,
+  }
   console.log(routeData.value)
 }
 
 async function fetchMap() {
   const url = baseUrl + pathId.value + '/map'
   const mapData = await axios.get(url)
-  pathOptions.value.path = mapData.data.coordinates;
-  center.value = mapData.data.center;    
-  updatedPath.value = mapData.data.coordinates;   
+  pathOptions.value.path = mapData.data.coordinates
+  center.value = mapData.data.center
 }
 
 function EditPath() {
-  const editable = !pathOptions.value.editable;
+  const editable = !pathOptions.value.editable
   pathOptions.value = {
     ...pathOptions.value,
-    editable: editable
-    }
+    editable: editable,
+  }
 }
 
 async function SavePath() {
+  // Use exposed getNewPath from MapItem
+  const newPath = mapItemRef.value?.getNewPath?.()
   pathOptions.value = {
     ...pathOptions.value,
-    path: getNewPath().getArray(),
-    editable: false
-    }
-    const response = await axios.put( 
-      baseUrl + pathId.value+ '/map', 
-      {
+    path: newPath ? newPath.getArray() : pathOptions.value.path,
+    editable: false,
+  }
+  const response = await axios.put(
+    baseUrl + pathId.value + '/map',
+    {
       path: pathOptions.value.path,
-      center: center.value
-      }
-    );
-    if (response.status != 200) {
-      console.error('Error saving path:', response);
+      center: center.value,
     }
-    fetchData()
+  )
+  if (response.status != 200) {
+    console.error('Error saving path:', response)
+    notify({
+      title: "Error",
+      text: "Error saving path",
+      type: "error",
+      duration: 5000,
+      speed: 1000,
+      position: "top right",
+    })
+  }
+  fetchData()
 }
 
 async function ExportPath() {
@@ -122,68 +121,27 @@ async function ExportPath() {
         type: "success",
         duration: 5000,
         speed: 1000,
-        position: "top right"
-      });
-    } 
+        position: "top right",
+      })
+    }
   } catch (error) {
-    console.error('Error exporting file:', error);
-    const message = error.response?.data?.message || 'Error exporting file';
+    console.error('Error exporting file:', error)
+    const message = error.response?.data?.message || 'Error exporting file'
     notify({
       title: "Error",
       text: message,
       type: "error",
       duration: 5000,
       speed: 1000,
-      position: "top right"
-    });
+      position: "top right",
+    })
   }
 }
 
-const handlePolylineDblClick = (event) => {
-  const gpsIndex = event.vertex;
-
-  // Access the underlying MVCArray of the path
-    const newPath = getNewPath();
-    // Get the path as an array of LatLng objects
-    const pathArray = newPath.getArray();
-
-  if (gpsIndex !== null && gpsIndex !== undefined) {
-    // Remove the vertex at the specified index
-    newPath.removeAt(gpsIndex);
-    // Reflect changes in updatedPath
-    updatedPath.value = pathArray.map(latLng => ({
-      lat: latLng.lat(),
-      lng: latLng.lng()
-    }));
-  }
-}
-
-function onPolylineEdited() {
-  if (polylineref.value) {
-    // Access the underlying MVCArray of the path
-    const newPath = getNewPath();
-    
-    // Get the path as an array of LatLng objects
-    const pathArray = newPath.getArray();
-    
-    updatedPath.value = pathArray.map(latLng => ({
-      lat: latLng.lat(),
-      lng: latLng.lng()
-    }));
-    console.log('Polyline path updated:', updatedPath.value);
-  }
-};
-
-function getNewPath() {
-  // This assumes the Polyline instance has a getPath() method
-  return polylineref.value.polyline.getPath()
-}
-
-onMounted(() => {
+onBeforeMount(() => {
   fetchData()
   fetchMap()
 })
-
 </script>
 
 <style scoped>
@@ -219,5 +177,4 @@ onMounted(() => {
     grid-row: 3;
     grid-column: 2;
 }
-
 </style>
