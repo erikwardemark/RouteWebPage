@@ -47,5 +47,7 @@ function onPolylineDblClick(event) {
 }
 
 defineExpose({ polylineref, getNewPath })
+
+
 </script>
 
