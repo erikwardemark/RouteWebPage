@@ -2,6 +2,7 @@
     <div id =container class = "container2-1">
         <div id="title" class="title">
             <h1>Running Routes</h1>
+            <button id = "settingsButton" @click=openSettings>Settings</button>
         </div>
         <div id="routelist" class="routelist">
             <div id="header" class="header">
@@ -75,6 +76,12 @@ function viewMap(pathId) {
     });
 }
 
+function openSettings() {
+    router.push({ 
+        name: 'Settings'
+    });
+}
+
 async function importFile(){
     const filePath = fileImport.value
     if (!filePath) return
@@ -120,6 +127,25 @@ fetchRoutes();
 </script>
 
 <style scoped>
+.title  {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+#settingsButton {
+    height: 30px;
+    align-self: center;
+    margin-right: 10px;
+    padding: 5px 10px;
+    background-color: var(--primary-orange);
+    color: var(--text-white);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#settingsButton:hover {
+    background-color: var(--active-orange);
+}   
+
 .routelist {
     overflow-y: auto;
     background-color: var(--primary-green);
@@ -148,16 +174,9 @@ fetchRoutes();
     grid-column: 2;
 } 
 .import-section input {
-    padding: 5px;
-    margin-right: 5px;
-    border-radius: 2px;
-    border: none;
     width: 60%;
 } 
-.import-section input:focus {
-    outline: var(--primary-orange) 2px solid;
-    box-shadow: 0 0 10px var(--primary-orange);
-}
+
 
 .about {
     background-color: #2E7D32;
