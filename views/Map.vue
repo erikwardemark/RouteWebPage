@@ -15,7 +15,8 @@
 
     <div id="map" class="map">
       <GoogleMap
-        api-key="AIzaSyCQmfChcySlixqBada07625MgJevZLlrg0"
+        v-if ="apiKey"
+        :api-key="apiKey"
         style="width: 100%; height: 400px"
         :center="center"
         :zoom="14"
@@ -43,7 +44,7 @@
 <script setup>
 import axios from 'axios';
 import { GoogleMap, Polyline } from 'vue3-google-map'
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRoute } from 'vue-router'
 import { useNotification } from "@kyvg/vue3-notification";
 
@@ -63,6 +64,14 @@ const { notify }  = useNotification()
 const baseUrl = 'http://192.168.1.87:5000/api/path/'
 const pathId = ref(router.params.id)
 const routeData = ref({})
+const settings = ref([]);
+
+const apiKey = computed(() => {
+  // adjust id or property name if needed
+  const key =  settings.value.find(s => s.id === '1')?.currentSetting || ''
+  console.log('API Key:', key);
+  return key;
+});
 
 async function fetchData() {
   const url = baseUrl + pathId.value 
@@ -173,12 +182,22 @@ function onPolylineEdited() {
 function getNewPath() {
   // This assumes the Polyline instance has a getPath() method
   return polylineref.value.polyline.getPath()
-  
-
 }
+
+async function fetchSettings(){
+    try {
+        const response = await axios.get ('http://192.168.1.87:5000/api/settings');
+        settings.value = response.data;
+        console.log('Fetched settings:', settings.value);
+    } catch (error) {
+        console.error('Error fetching settings:', error);
+    }
+}
+
 onMounted(() => {
   fetchData()
   fetchMap()
+  fetchSettings()
 })
 
 </script>
