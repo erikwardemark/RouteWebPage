@@ -68,8 +68,7 @@ const settings = ref([]);
 
 const apiKey = computed(() => {
   // adjust id or property name if needed
-  const key =  settings.value.find(s => s.id === '1')?.currentSetting || ''
-  console.log('API Key:', key);
+  const key =  settings.value.find(s => s.key === 'ApiKeyMap')?.currentSetting || ''
   return key;
 });
 

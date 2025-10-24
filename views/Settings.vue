@@ -5,10 +5,10 @@
 
         <div id ="settings-list">
             <SettingItemText v-for ="setting in settings" 
-                :key ="setting"
+                :key ="setting.id"
                 :title="setting.title"
                 :description="setting.description"
-                :currentSetting= "setting.currentSetting">
+                v-model:currentSetting= "setting.currentSetting">
             </SettingItemText>
         </div>
         <button @click="Save()">Save</button>

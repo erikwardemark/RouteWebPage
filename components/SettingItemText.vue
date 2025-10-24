@@ -28,7 +28,15 @@ const props = defineProps({
     default: ''
   }
 });
+
+const emit = defineEmits(['update:currentSetting']);
+
 const setting = ref(props.currentSetting);
+
+watch(setting, (val) => {
+  emit('update:currentSetting', val);
+});
+
 </script>
 
 <style scoped>
