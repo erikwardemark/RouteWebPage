@@ -11,12 +11,12 @@
       </div>
     </div>
 
-    <div id="map" class="map">
     <MapItem 
       :center="center" 
       :pathOptions="pathOptions" 
       ref="mapItemRef"
     />
+
     <div id="buttons" class="buttons">
       <button @click="EditPath">Edit Path</button>
       <button @click="SavePath">Save Path</button>
@@ -31,7 +31,7 @@
 
 <script setup>
 import axios from 'axios'
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { onBeforeMount, computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useNotification } from "@kyvg/vue3-notification"
 import MapItem from '../components/MapItem.vue'
@@ -214,7 +214,6 @@ async function fetchSettings(){
     }
 }
 
-onMounted(() => {
 onBeforeMount(() => {
   testApiKey()
   fetchData()
