@@ -51,7 +51,7 @@ const runPaths = ref([]);
 const loading = ref(false);
 const error = ref(null);
 const fileImport = ref(null);
-const backendUrl = '192.168.1.87:5000' //http://192.168.1.143:5000/api/routes
+const backendUrl = '192.168.1.143:5000' //http://192.168.1.143:5000/api/routes
 
 async function fetchRoutes() {
     try {

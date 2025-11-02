@@ -23,7 +23,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 const router = useRouter();
-const backendUrl = '192.168.1.87:5000'
+const backendUrl = '192.168.1.143:5000'
 const settings = ref([]);
 
 async function Save(){
