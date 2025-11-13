@@ -49,7 +49,7 @@ const pathOptions = ref({
 
 const router = useRoute()
 const { notify } = useNotification()
-const baseUrl = 'http://192.168.1.87:5000/api/path/'
+const baseUrl = 'http://192.168.1.143:5000/api/path/'
 const pathId = ref(router.params.id)
 const routeData = ref({})
 
