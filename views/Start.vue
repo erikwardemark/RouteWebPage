@@ -2,7 +2,7 @@
     <div id =container class = "container2-1">
         <div id="title" class="title">
             <h1>Running Routes</h1>
-            <button id = "settingsButton" @click=openSettings>Settings</button>
+            <Button id="settingsButton" label="Settings" @click="openSettings"> </Button> 
         </div>
         <div id="routelist" class="routelist">
             <div id="header" class="header">
@@ -19,7 +19,7 @@
                     <p>Start GPS coordinates: {{ path.startPoint }}</p>
 
                 </div>
-                <button class="map-button" @click="viewMap(path.id)">View Map</button>
+                <Button label="View Map" @click="viewMap(pathId)"></Button>
             </ExpandableItem>
         </div>
         <div id="about" class="about">
@@ -31,7 +31,7 @@
          <div class = "import-section">
                 <h1>Import new route</h1>
                 <input v-model="fileImport" placeholder="File path" />
-                <button @click="importFile">Import</button>
+                <Button label="Import File" @click="importFile"></Button>>
         </div>
         <div class="footer">
             <p>By Erik Wårdemark</p>
@@ -42,6 +42,7 @@
 <script setup>
 import axios from 'axios';
 import ExpandableItem from '../components/ExpandableItem.vue';
+import Button from '../components/Button.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { notify } from '@kyvg/vue3-notification';
