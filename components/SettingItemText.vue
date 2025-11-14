@@ -1,10 +1,8 @@
 <template>
     <div class="setting-card">
-      <slot>
-        <h2>{{ title }}</h2>
-        <p> {{ description }}</p>
-        <input v-model="setting" />
-      </slot>
+      <h2>{{ title }}</h2>
+      <p> {{ description }}</p>
+      <input v-model="setting" />
     </div>
 </template>
 
@@ -29,12 +27,12 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['update:currentSetting']);
+const emit = defineEmits(['updateCurrentSetting']);
 
 const setting = ref(props.currentSetting);
 
 watch(setting, (val) => {
-  emit('update:currentSetting', val);
+  emit('updateCurrentSetting', val);
 });
 
 </script>

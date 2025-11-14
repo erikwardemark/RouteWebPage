@@ -1,5 +1,5 @@
 {
-  "name": "vue-frontend",
+  "name": "route-web-page",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,11 @@
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^3.4.1",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/test-utils": "^2.4.6",
     "axios": "^1.6.8",
     "core-js": "^3.36.1",
+    "vitest": "^4.0.8",
     "vue": "^3.4.21",
     "vue-router": "^4.0.0",
     "vue3-google-map": "^0.22.0"
@@ -22,7 +25,8 @@
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "eslint": "^8.57.0",
-    "eslint-plugin-vue": "^9.24.1"
+    "eslint-plugin-vue": "^9.24.1",
+    "jsdom": "^27.2.0"
   },
   "eslintConfig": {
     "root": true,
